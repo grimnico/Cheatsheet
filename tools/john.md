@@ -2,14 +2,14 @@
 
     john --test
 
-#To use your own word list (the Rockyou list is suggested)
+To use your own word list (the Rockyou list is suggested)
 
     john --wordlist=[filename] [passwordfile]
 
-#To show your results after running john (shows ~/.john/john.pot)
+To show your results after running john (shows ~/.john/john.pot)
 
     john --show
 
-#To restore an interrupted john session
+To restore an interrupted john session
 
     john --restore
