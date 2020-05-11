@@ -1,5 +1,3 @@
-# Bettercap
-
 ## GUI
 
 Install GUI:
