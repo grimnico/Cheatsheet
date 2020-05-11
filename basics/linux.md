@@ -4,19 +4,19 @@ http://dmvillan.com/kali-linux-commands-list/
 
 	ifconfig & iwconfig
 
-Restart WIFI Adaptater:
+## Restart WIFI Adaptater:
 
 	service network-manager restart
 
-Check partition:
+## Check partition:
 
 	df -h
 
-Active web server:
+## Active web server:
 
 	service apache2 start 
 
-Linux updates:
+## Linux updates:
 
 To begin the update of your Kali Linux system first update the packages index list. Open up terminal and enter:
 
@@ -44,7 +44,7 @@ During your initial system upgrade some of the packages may become obsolete, hen
 	
 	sudo apt-get autoremove
 
-Kali Installation:
+## Kali Installation:
 
 Search for kali packages:
 
@@ -54,18 +54,18 @@ Install kali packages:
 
 	sudo apt update && sudo apt install kali-linux-all
 
-Install Parirus Theme:
+## Install Parirus Theme:
 
 	sudo add-apt-repository ppa:papirus/papirus
 	sudo apt-get update
 	sudo apt-get install papirus-icon-theme
 
-List all application:
+## List all application:
 
 	dpkg -l
 	apt list
 
-Install Vmware tools:
+## Install Vmware tools:
 
 	sudo apt update && sudo apt full-upgrade -y
 	[ -f /var/run/reboot-required ] && sudo reboot -f
@@ -76,15 +76,15 @@ Install Vmware tools:
 	ln -sf /usr/local/sbin/mount-shared-folders ~/Desktop/mount-shared-folders
 	gsettings set org.gnome.nautilus.preferences executable-text-activation 'ask'
 
-Install Softwares:
+## Install Softwares:
 
 	sudo apt-get install git (install git)
 
-Create alias:
+## Create alias:
 
 	nano /root/.bash_aliases
 
-Create a function to update system automaticaly:
+## Create a function to update system automaticaly:
 
 	function apt-updater {
 		apt-get update &&
@@ -95,7 +95,7 @@ Create a function to update system automaticaly:
 		reboot
 	}
 	
-Install WIFI driver:
+## Install WIFI driver:
 
 	sudo apt update
 	sudo apt install realtek-rtl88xxau-dkms
