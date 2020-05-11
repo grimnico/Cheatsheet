@@ -1,86 +1,101 @@
-# MAC & Linux:
+# Linux command lines:
 
-https://explainshell.com/
+http://dmvillan.com/kali-linux-commands-list/
 
-	sudo !! (repeat last command like root)
+	ifconfig & iwconfig
 
-	pwd (actual route)
+## Restart WIFI Adaptater:
 
-	ls -1 (one column)
+	service network-manager restart
+
+## Check partition:
+
+	df -h
+
+## Active web server:
+
+	service apache2 start 
+
+## Linux updates:
+
+To begin the update of your Kali Linux system first update the packages index list. Open up terminal and enter:
+
+	sudo apt update -y
+
+	sudo apt-get update -y
 	
-	ls -all
-	ls -all > file.txt (record outpout on file)
-	ls -all | grep filter* (filtrar)
+Next, optionally, display all packages which are scheduled for update:
+
+	sudo apt list --upgradable
+
+At this stage we have an option to upgrade individual packages using apt install PACKAGE-NAME or upgrade all packages at once:
+
+	sudo apt-get upgrade -y
+
+Due to package dependency changes some of the Kali Linux packages might be kept back. 
+
+If this is this case you will be notified by the apt upgrade Linux command at the end of the Kali Linux upgrade process. You may upgrade each kept back package individually using the apt install PACKAGE-NAME command or update all kept back packages at once:
+
+	sudo apt dist-upgrade -y
+
+	sudo apt-get dist-upgrade -y
+
+During your initial system upgrade some of the packages may become obsolete, hence are no longer required. To remove all no longer required Kali Linux packages execute:
 	
-	touch file.txt (create file)
+	sudo apt-get autoremove
+
+## Kali Installation:
+
+Search for kali packages:
+
+	apt-get update && apt-cache search kali-linux
+
+Install kali packages:
+
+	sudo apt update && sudo apt install kali-linux-all
+
+## Install Parirus Theme:
+
+	sudo add-apt-repository ppa:papirus/papirus
+	sudo apt-get update
+	sudo apt-get install papirus-icon-theme
+
+## List all application:
+
+	dpkg -l
+	apt list
+
+## Install Vmware tools:
+
+	sudo apt update && sudo apt full-upgrade -y
+	[ -f /var/run/reboot-required ] && sudo reboot -f
+
+	sudo apt install -y --reinstall open-vm-tools-desktop fuse
+	sudo reboot
+
+	ln -sf /usr/local/sbin/mount-shared-folders ~/Desktop/mount-shared-folders
+	gsettings set org.gnome.nautilus.preferences executable-text-activation 'ask'
+
+## Install Softwares:
+
+	sudo apt-get install git (install git)
+
+## Create alias:
+
+	nano /root/.bash_aliases
+
+## Create a function to update system automaticaly:
+
+	function apt-updater {
+		apt-get update &&
+		apt-get dist-upgrade -Vy &&
+		apt-get autoremove -y &&
+		apt-get autoclean &&
+		apt-get clean &&
+		reboot
+	}
 	
-	cat file.txt (read content)
-	
-	rm file.txt (remove file)
-	
-	mkdir (create directory)
-	rm -R (remove directory)
+## Install WIFI driver:
 
-	history 
-
-	cp file.txt file2txt (copy)
-
-	more 
-
-	ps (servicios)
-	ps -all
-	ps -ax
-
-	kill UID (kill process)
-	kill -9 UID (force kill process)
-
-	top (activity monitor)
-
-	locate finder (search)
-	updatedb
-
-	whereis dash (search bin)
-
-	service (list services)
-	service servicename start | status | stop
-
-	sudo crontab -u nicolasgrimonpont -l (check cron tasks)
-	crontab -l (check cron tasks for this user)
-
-Action to get informations about computer:
-
-	date
-	cal
-	uptime (show time from starting)
-	w (list users)
-	whoami (this user)
-	finger username (info about user)
-	uname -a (sysinfo)
-	cat /proc/cpuinfo (processor)
-	cat /proc/meminfo (memory)
-	free (check memory)
-	df (check disk) b
-	lsb_release -a (os version)
-
-Scripting:
-
-	sort -u (check for unique)
-
-Get all IP of web page:
-
-	wget http://www.cisco.com/
-	grep "href=" index.html | cut -d"/" -f3 | grep "\." | cut -d '"' -f1 | sort -u > dominios.txt
-	for dom in $(cat dominios.txt); do host $dom; done | grep "has address" | cut -d" " -f4
-	for dom in $(cat dominios.txt); do host $dom | grep "has address" | cut -d" " -f4 done > ips.txt
-	cat ips.txt | sort -u
-
-Mailinator
-
-	check domain on robtex.com and search for "using as mail server"
-	choose one domain and use it like mailinator.com address
-	
-Check PORT used :
-
-	lsof -i -P -n
-	sudo lsof -i -P -n | grep LISTEN
-
+	sudo apt update
+	sudo apt install realtek-rtl88xxau-dkms
