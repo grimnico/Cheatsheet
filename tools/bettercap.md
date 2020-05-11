@@ -1,4 +1,6 @@
-# GUI
+# Bettercap
+
+## GUI
 
 Install GUI:
 
