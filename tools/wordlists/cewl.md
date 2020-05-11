@@ -1,4 +1,4 @@
-CEWL:
+# CEWL
 
 Create wordlists from website:
 

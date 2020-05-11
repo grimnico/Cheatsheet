@@ -1,4 +1,4 @@
-CUPP:
+# CUPP
 
 Interactive Worldlist for Peoples.
 
