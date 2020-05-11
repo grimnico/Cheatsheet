@@ -54,11 +54,13 @@ We can send the encoded URL parameters in encoders, choose URL format, to decode
 
 PortSwigger CA certificate are certificate created from Burp, can search it on keychain. Also can verify proxy configuration on system preference, network, on mac.
 
-## Use caffeinate to force keep the connection open:
+Keep connection open:
+
+Use caffeinate to force keep the connection open:
 
 	- caffeinate &
 
-## Desactive the certificate for http and https:
+Desactive the certificate for http and https:
 
 	- /usr/sbin/networksetup -setwebproxystate "Wi-fi" off
 	- /usr/sbin/networksetup -setsecurewebproxystate "Wi-fi" off
