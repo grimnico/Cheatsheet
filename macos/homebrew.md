@@ -1,50 +1,65 @@
-Brew:
+## Brew
 
-	# List all the installed formulae.
-	- brew list
+List all the installed formulae.
 	
-	# Display all locally available formulae for brewing.
-	- brew search
+	brew list
 	
-	# Perform a substring search of formulae names for brewing.
-	- brew search <text>
+Display all locally available formulae for brewing.
 	
-	# Display information about the formula.
-	- brew info <formula>
+	brew search
 	
-	# Install the formula.
-	- brew install <formula>
+Perform a substring search of formulae names for brewing.
 	
-	# Uninstall the formula.
-	- brew uninstall <formula>
+	brew search <text>
+	
+Display information about the formula.
+	
+	brew info <formula>
+	
+Install the formula.
+	
+	brew install <formula>
+	
+Uninstall the formula.
+	
+	brew uninstall <formula>
 
-Brew cask:
+## Brew cask
 
-	# Add the Cask repository from Github.
-	• brew tap homebrew/cask
+Add the Cask repository from Github.
 	
-	# List all the installed casks .
-	• brew cask list
+	brew tap homebrew/cask
 	
-	# Search all known casks based on the substring text.
-	• brew search <text>
+List all the installed casks .
 	
-	# Install the given cask.
-	• brew cask install <cask>
+	brew cask list
 	
-	# Reinstalls the given Cask
-	• brew cask reinstall <cask>
+Search all known casks based on the substring text.
 	
-	# Uninstall the given cask.
-	• brew cask uninstall <cask>
+	brew search <text>
+	
+Install the given cask.
+	
+	brew cask install <cask>
+	
+Reinstalls the given Cask
+	
+	brew cask reinstall <cask>
+	
+Uninstall the given cask.
 
-Clean up:
+	brew cask uninstall <cask>
 
-	# Remove older versions of installed formulae.
-	• brew cleanup
+## Clean up
+
+Remove older versions of installed formulae.
+
+	brew cleanup
 	
-	# Remove older versions of specified formula.
-	• brew cleanup <formula>
+Remove older versions of specified formula.
+
+	brew cleanup <formula>
 	
-	# Display all formula that will be removed (dry run)
+Display all formula that will be removed (dry run)
+
 	brew cleanup -n
