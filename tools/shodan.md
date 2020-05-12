@@ -1,20 +1,27 @@
-# Filter IP range
-net:<ip range>
+Filter IP range
 
-# Filter port
-port:<port>
+    net:<ip range>
 
-# Filter location
-city:"<city>" country:<country_code>
-geo:<coords>
+Filter port
 
-# Filter hostname
-hostname:<hostname>
+    port:<port>
 
-# Filter operating system
-os:<operating system>
+Filter location
 
-# Filter dates
-# Acceptable formats are: day/month/year or day-month-year
-before:<date>
-after:<date>
+    city:"<city>" country:<country_code>
+    geo:<coords>
+
+Filter hostname
+
+    hostname:<hostname>
+
+Filter operating system
+
+    os:<operating system>
+
+Filter dates
+
+Acceptable formats are: day/month/year or day-month-year
+
+    before:<date>
+    after:<date>
