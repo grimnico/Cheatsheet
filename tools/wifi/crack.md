@@ -13,12 +13,21 @@
 
 	crunch 8 8 0123456789 -s 00000000 -e 99999999 | aircrack -e test proof.cap -w -
 
+Use john to keep a session of aircrack when used with huge wordlist:
+
+		crunch 8 8 | john --stdin --wordlist=password.lst --stdout --session=sessname | aircrack-ng -b C0:25:E9:62:CE:E5 psk-01.cap -w -
+
+
 ## John & Aircrack:
 
 	john --wordlist=password.lst --rules=Jumbo --stdout | aircrack-ng -b C0:25:E9:62:CE:E5 psk-01.cap -w -
 
-	https://wpa-sec.stanev.org/
-	https://github.com/danielmiessler/SecLists
+Use john to keep a session of aircrack when used with huge wordlist:
+
+	john --wordlist=password.lst --rules=Jumbo --stdout --session=sessname | aircrack-ng -b C0:25:E9:62:CE:E5 psk-01.cap -w -
+
+https://wpa-sec.stanev.org/
+https://github.com/danielmiessler/SecLists
 
 ## Pyrit:
 
@@ -46,7 +55,7 @@ Final command:
 
 	pyrit -r capture.pcap -o savedpass attack_batch
 
-## New Method of Password Cracking:
+## Hxctools & Hashcat
 
 In this case we use Hxctools & Hashcat to capture packets and crack the password but we can do that automaticaly with wifite, if the necessary softwares are installed Wifite will automaticaly use them and give us a URL to upload the modified handshakes. Then the password cracking is performed from connected server online using different password lists.
 
@@ -88,8 +97,16 @@ This command is telling hxcpcaptool to use the information included in the file 
 
 Select a Password List & Brute Force with Hashcat:
 
-	hashcat -m 16800 galleriaHC.16800 -a 0 --kernel-accel=1 -w 4 --force 'topwifipass.txt'
+	hashcat -m 16800 galleriaHC.16800 -a 0 --kernel-accel=1 -w 4 --force 'topwifipass.txt' > out.txt
+
+	hashcat -m 16800 --force final.txt /home/user/Downloads/Top353Million-probable-v2.txt > out.txt
+
+	hashcat -m 16800 --force final.txt /home/user/Downloads/Top353Million-probable-v2.txt --show
 	
 In this command, we are starting Hashcat in 16800 mode, which is for attacking WPA-PMKID-PBKDF2 network protocols. Next, we'll specify the name of the file we want to crack, in this case, "galleriaHC.16800." The -a flag tells us which types of attack to use, in this case, a "straight" attack, and then the -w and --kernel-accel=1 flags specifies the highest performance workload profile. If your computer suffers performance issues, you can lower the number in the -w argument.
 
 Next, the --force option ignores any warnings to proceed with the attack, and the last part of the command specifies the password list we're using to try to brute force the PMKIDs in our file, in this case, called "topwifipass.txt."
+
+Online cracking:
+
+	https://gpuhash.me/
