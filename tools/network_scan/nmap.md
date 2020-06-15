@@ -34,4 +34,4 @@ Scenario:
 	• nmap 10.0.0.0 -p21
 	• nmap 10.0.0.0 -p21 -sV
 	• Locate "*vsftp*.nse"
-nmap 10.0.0.0 -p21 --script ftp-vsftp-backdoor
+	• nmap 10.0.0.0 -p21 --script ftp-vsftp-backdoor

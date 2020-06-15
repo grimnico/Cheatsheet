@@ -53,6 +53,14 @@ Attack all wireless with connected clients after 5 minutes scan.
 
 	sudo wifite -mac -p 300 --kill --clients-only --no-wps --no-pmkid --skip-crack
 
+## Hxcdump:
+
+Use Hxcdump to Capture PMKIDs from Local Networks
+
+	sudo airmon-ng start wlan0
+	
+	sudo hcxdumptool -i wlan0mon -o capture.pcapng --enable_status=1
+
 ## Lazy Script:
 
 	cd (back to user folder)
