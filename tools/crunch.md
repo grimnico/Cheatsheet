@@ -1,6 +1,8 @@
 Main command:
 
-	• crunch <min> <max> <character-set> -t <pattern> -o <path>
+```bash
+crunch <min> <max> <character-set> -t <pattern> -o <path>
+```
 
 crunch – crunch is the keyword which notifies the system to use this tool.
 <min> – here you specify the minimum length characters you want.
@@ -12,7 +14,7 @@ crunch – crunch is the keyword which notifies the system to use this tool.
 Example:
 
 	• crunch 2 4 -f /usr/local/Cellar/crunch/3.6/share/charset.lst mixalpha-numeric -o nicotest.txt
-
+	
 	• crunch 8 8 -f /usr/share/crunch/charset.lst hex-lower -d 2@ (not 3 same characters one after other)
 
 Charsets:

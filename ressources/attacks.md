@@ -15,3 +15,4 @@ Virus total:
 
 Test a virus to find out which antivirus will detect it. (don't send custom virus to virus total because the database is used to integrate new virus in antivirus databases)
 https://www.virustotal.com/gui/
+
