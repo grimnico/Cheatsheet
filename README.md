@@ -66,6 +66,12 @@ open -a ApplicationName --hide (launches an app hidden)
 open Downloads/Instructions.doc -a TextEdit (open a file in one application)
 ```
 
+### Test network connexion
+
+```bash
+networkQuality
+```
+
 ### Computer talk
 
 ```bash
