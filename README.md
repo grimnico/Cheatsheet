@@ -209,6 +209,11 @@ Copy that lines to customize prompt and add colors:
 	export CLICOLOR=1
 	export LSCOLORS=ExFxBxDxCxegedabagacad
 
+## Enable Touch id for sudo commands in terminal
+
+	sudo cp /etc/pam.d/sudo_local.template /etc/pam.d/sudo_local
+
+ 	sudo nano /etc/pam.d/sudo_local (and remove comment)
 
 
 ## Homebrew
