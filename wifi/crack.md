@@ -108,6 +108,19 @@ Select a Password List & Brute Force with Hashcat:
 	hashcat -m 16800 --force hash /home/user/Downloads/rockyou.txt.txt > out.txt
 
 	hashcat -m 16800 --force hash /home/user/Downloads/rockyou.txt.txt --show
+
+ New:
+
+ 	hashcat -m 22000 -a 3 --session session_name /Users/nicolasgrimonpont/Hash '?1?1?1?1?1?1?1?1' -1 '?l?u?d'
+
+  This is a mask attack:
+  - m 22000 (new WPA algo)
+  - '?1?1?1?1?1?1?1?1' (mask lenght)
+  - -1 '?l?u?d' (custom rule 1) uppercase, lowercase, digit
+
+  - '?2?2?2?2?2?2?2?2' (mask lenght)
+  - -2 '?l?u?d' (custom rule 2) uppercase, lowercase, digit
+
 	
 In this command, we are starting Hashcat in 16800 mode, which is for attacking WPA-PMKID-PBKDF2 network protocols. Next, we'll specify the name of the file we want to crack, in this case, "HC.16800." The -a flag tells us which types of attack to use, in this case, a "straight" attack, and then the -w and --kernel-accel=1 flags specifies the highest performance workload profile. If your computer suffers performance issues, you can lower the number in the -w argument.
 
