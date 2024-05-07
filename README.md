@@ -160,6 +160,12 @@ To prevent the display from sleeping, use caffeinate -d. To prevent the system f
 
 Finally, and this one is particularly useful for laptop users, if you want keep your system awake while it is plugged into AC power, use caffeinate -s.
 
+## Remove stage manager border
+
+```bash
+defaults write com.apple.WindowManager StageFrameMinimumHorizontalInset -int 0
+```
+
 
 
 ## High privileges actions
